@@ -1,2 +1,2 @@
-# getting-started-with-ros-in-docker
+# Getting Started With ROS in Docker
 Running ROS in docker
