@@ -1,0 +1,29 @@
+version: '3'
+services:
+  server:
+    image: ros:latest
+    container_name: server
+    command: roscore
+  talker:
+    image: ros:latest
+    container_name: talker
+    working_dir: /catkin_ws
+    command: /bin/bash -c "catkin_make && source /catkin_ws/devel/setup.bash && rosrun beginner_tutorials talker"
+    volumes:
+      - .:/catkin_ws/src/beginner_tutorials
+    depends_on:
+      - server
+    environment:
+      - ROS_MASTER_URI=http://server:11311/
+  listener:
+    image: ros:latest
+    container_name: listener
+    command: /bin/bash -c "catkin_make && source /catkin_ws/devel/setup.bash && rosrun beginner_tutorials listener"
+    working_dir: /catkin_ws
+    volumes:
+      - .:/catkin_ws/src/beginner_tutorials
+    depends_on:
+      - server
+      - talker
+    environment:
+      - ROS_MASTER_URI=http://server:11311/
